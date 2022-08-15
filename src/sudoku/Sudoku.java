@@ -27,7 +27,7 @@ public class Sudoku implements SudokuSolver {
 			do {
 				num++;
 				matrix[i][j] = num;
-			} while (!isValid());
+			} while (!isValid(i, j));
 			if (num > 9) {
 				matrix[i][j] = 0;
 				return false;

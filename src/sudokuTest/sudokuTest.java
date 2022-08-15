@@ -125,6 +125,12 @@ class sudokuTest {
 	void testSolve() {
 		assertTrue(s::solve);
 		assertTrue(s::isValid);
+		for (int i = 0; i < 9; i++) {
+			for (int j = 0; j < 9; j++) {
+				System.out.print(s.get(i, j)+ " ");
+			}
+			System.out.println();
+		}
 	}
 	@Test
 	void testIllegalSolve() {
