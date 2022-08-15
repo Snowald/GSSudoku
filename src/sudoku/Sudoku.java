@@ -14,31 +14,25 @@ public class Sudoku implements SudokuSolver {
 	}
 
 	private boolean solve(int i, int j) {
-		if (i > 8) {
-			i = 0;
-			j++;
-		}
+		j += i / 9;
+		i %= 9;
 		if (j > 8) {
 			return true;
 		}
 		if (matrix[i][j] != 0) {
-			if (!isValid(i, j)) {
-				return false;
-			}
-			return solve(i + 1, j);
+			return isValid(i, j) && solve(i + 1, j);
 		}
 		int num = 0;
 		do {
 			do {
 				num++;
 				matrix[i][j] = num;
+			} while (!isValid());
+			if (num > 9) {
+				matrix[i][j] = 0;
+				return false;
 			}
-			while(!isValid());
-		} while (num <= 9 && !solve(i+1, j));
-		if (num > 9) {
-			matrix[i][j] = 0;
-			return false;
-		}
+		} while (!solve(i + 1, j));
 		return true;
 	}
 
