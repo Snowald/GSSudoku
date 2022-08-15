@@ -2,6 +2,13 @@ package sudoku;
 
 public class Sudoku implements SudokuSolver {
 
+	private int[][] matrix;
+
+	public Sudoku()
+	{
+		matrix = new int[9][9];
+	}
+
 	@Override
 	public boolean solve() {
 		// TODO Auto-generated method stub
@@ -10,20 +17,32 @@ public class Sudoku implements SudokuSolver {
 
 	@Override
 	public void add(int row, int col, int digit) {
-		// TODO Auto-generated method stub
+		validateRange(row);
+		validateRange(col);
+		validateRange(digit);
+		matrix[row-1][col-1] = digit;
 
 	}
 
 	@Override
 	public void remove(int row, int col) {
-		// TODO Auto-generated method stub
-
+		validateRange(row);
+		validateRange(col);
+		matrix[row - 1][col - 1] = 0;
 	}
 
 	@Override
 	public int get(int row, int col) {
-		// TODO Auto-generated method stub
-		return 0;
+		validateRange(row);
+		validateRange(col);
+		return matrix[row-1][col-1];
+	}
+
+	private void validateRange(int i) throws IllegalArgumentException
+	{
+		if(i < 1 || i > 9){
+			throw new IllegalArgumentException();
+		}
 	}
 
 	@Override
@@ -34,8 +53,7 @@ public class Sudoku implements SudokuSolver {
 
 	@Override
 	public void clear() {
-		// TODO Auto-generated method stub
-
+		matrix = new int[9][9];
 	}
 
 	@Override
