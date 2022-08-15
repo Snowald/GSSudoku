@@ -1,8 +1,5 @@
 package sudoku;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Sudoku implements SudokuSolver {
 
 	private int[][] matrix;
@@ -27,16 +24,13 @@ public class Sudoku implements SudokuSolver {
 		}
 		for (int number = 1; number < 10; number++) {
 			matrix[i][j] = number;
-			if(isValid(i, j)){
-				if(solve(i+1, j)){
-					return true;
-				}
+			if (isValid(i, j) && solve(i + 1, j)) {
+				return true;
 			}
 		}
 		matrix[i][j] = 0;
 		return false;
 	}
-
 
 	@Override
 	public void add(int row, int col, int digit) {
