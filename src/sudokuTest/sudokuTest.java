@@ -1,8 +1,11 @@
 package sudokuTest;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.AfterEach;
@@ -35,6 +38,9 @@ class sudokuTest {
 	void testAddAndGetThrowsCorrectExceptions() {
 		assertThrows(IllegalArgumentException.class, () -> s.add(10, 2, 4));
 		assertThrows(IllegalArgumentException.class, () -> s.add(5, -1, 4));
+		assertThrows(IllegalArgumentException.class, () -> s.add(5, 3, -1));
+		assertThrows(IllegalArgumentException.class, () -> s.add(5, 3, 10));
+		assertDoesNotThrow(() -> s.add(5, 3, 0));
 		assertThrows(IllegalArgumentException.class, () -> s.get(5, -1));
 		assertThrows(IllegalArgumentException.class, () -> s.get(10, 2));
 	}
@@ -88,9 +94,36 @@ class sudokuTest {
 	}
 
 	@Test
+	void testSetMatrixGeneratesCorrectExceptions() {
+		int [][] m1 = new int[8][9];
+		assertThrows(IllegalArgumentException.class, () -> s.setMatrix(m1));
+		int [][] m2  = new int[9][10];
+		assertThrows(IllegalArgumentException.class, () -> s.setMatrix(m2));
+		int [][] m3  = new int[9][9];
+		m3[8][8] = 10;
+		assertThrows(IllegalArgumentException.class, () -> s.setMatrix(m3));
+
+	}
+
+	@Test
+	void testIsValid() {
+		s.add(0, 0, 1);
+		assertTrue(s::isValid);
+		s.add(1, 1, 1);
+		assertFalse(s::isValid);
+		s.clear();
+		s.add(3, 3, 7);
+		s.add(4, 5, 7);
+		assertFalse(s::isValid);
+		s.clear();
+		s.add(3, 3, 7);
+		s.add(4, 5, 8);
+		assertTrue(s::isValid);
+	}
+
+	@Test
 	void test() {
 		fail("Not yet implemented");
 	}
-
 
 }
