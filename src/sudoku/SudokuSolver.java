@@ -25,7 +25,7 @@ public interface SudokuSolver {
 	 * @param row	The row
 	 * @param col   The column
 	 * @throws IllegalArgumentException if row or col is outside the range
-	 *                                  [1..9]
+	 *                                  [0..8]
 	 */
 	void remove(int row, int col);
 
@@ -35,7 +35,7 @@ public interface SudokuSolver {
 	 * @param col   The column
 	 * @return 		The number in the box
 	 * @throws IllegalArgumentException if row or col is outside the range
-	 *                                  [1..9]
+	 *                                  [0..8]
 	 */
 	int get(int row, int col);
 

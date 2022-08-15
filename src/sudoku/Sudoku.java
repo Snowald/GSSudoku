@@ -19,8 +19,8 @@ public class Sudoku implements SudokuSolver {
 	public void add(int row, int col, int digit) {
 		validateRange(row);
 		validateRange(col);
-		validateRange(digit);
-		matrix[row-1][col-1] = digit;
+		validateRange(digit-1);
+		matrix[row][col] = digit;
 
 	}
 
@@ -28,19 +28,19 @@ public class Sudoku implements SudokuSolver {
 	public void remove(int row, int col) {
 		validateRange(row);
 		validateRange(col);
-		matrix[row - 1][col - 1] = 0;
+		matrix[row][col] = 0;
 	}
 
 	@Override
 	public int get(int row, int col) {
 		validateRange(row);
 		validateRange(col);
-		return matrix[row-1][col-1];
+		return matrix[row][col];
 	}
 
 	private void validateRange(int i) throws IllegalArgumentException
 	{
-		if(i < 1 || i > 9){
+		if(i < 0 || i > 8){
 			throw new IllegalArgumentException();
 		}
 	}
@@ -58,14 +58,13 @@ public class Sudoku implements SudokuSolver {
 
 	@Override
 	public void setMatrix(int[][] m) {
-		// TODO Auto-generated method stub
+		matrix = m;
 
 	}
 
 	@Override
 	public int[][] getMatrix() {
-		// TODO Auto-generated method stub
-		return null;
+		return matrix;
 	}
 
 }

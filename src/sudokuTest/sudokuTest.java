@@ -1,5 +1,6 @@
 package sudokuTest;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -47,8 +48,8 @@ class sudokuTest {
 	
 	@Test
 	void testRemoveThrowsCorrectExceptions() {
-		assertThrows(IllegalArgumentException.class, () -> s.remove(10, 2));
-		assertThrows(IllegalArgumentException.class, () -> s.remove(3, 0));
+		assertThrows(IllegalArgumentException.class, () -> s.remove(9, 2));
+		assertThrows(IllegalArgumentException.class, () -> s.remove(3, -1));
 	}
 	
 	
@@ -63,8 +64,33 @@ class sudokuTest {
 	}
 	
 	@Test
+	void testSetMatrix() {
+		int [][] m1 = new int[9][9];
+		m1[2][3] = 9;
+		m1[3][3] = 2;
+		m1[4][5] = 6;
+		s.setMatrix(m1);
+		assertEquals(9, s.get(2, 3));
+		assertEquals(2, s.get(3, 3));
+		assertEquals(6, s.get(4, 5));		
+	}
+
+	@Test
+	void testGetMatrix() {
+		s.add(4, 6, 5);
+		s.add(2, 6, 8);
+		s.add(8, 3, 1);
+		int [][] m1 = new int[9][9];
+		m1[4][6] = 5;
+		m1[2][6] = 8;
+		m1[8][3] = 1;
+		assertArrayEquals(m1, s.getMatrix());
+	}
+
+	@Test
 	void test() {
 		fail("Not yet implemented");
 	}
+
 
 }
