@@ -10,8 +10,36 @@ public class Sudoku implements SudokuSolver {
 
 	@Override
 	public boolean solve() {
-		// TODO Auto-generated method stub
-		return false;
+		return solve(0, 0);
+	}
+
+	private boolean solve(int i, int j) {
+		if (i > 8) {
+			i = 0;
+			j++;
+		}
+		if (j > 8) {
+			return true;
+		}
+		if (matrix[i][j] != 0) {
+			if (!isValid(i, j)) {
+				return false;
+			}
+			return solve(i + 1, j);
+		}
+		int num = 0;
+		do {
+			do {
+				num++;
+				matrix[i][j] = num;
+			}
+			while(!isValid());
+		} while (num <= 9 && !solve(i+1, j));
+		if (num > 9) {
+			matrix[i][j] = 0;
+			return false;
+		}
+		return true;
 	}
 
 	@Override
@@ -67,19 +95,19 @@ public class Sudoku implements SudokuSolver {
 		if (number == 0) {
 			return true;
 		}
-		//Validate Column
+		// Validate Column
 		for (int i = 0; i < matrix.length; i++) {
 			if (number == matrix[i][col] && i != row) {
 				return false;
 			}
 		}
-		//Validate Row
+		// Validate Row
 		for (int i = 0; i < matrix[row].length; i++) {
 			if (number == matrix[row][i] && i != col) {
 				return false;
 			}
 		}
-		//validate 3 x 3
+		// validate 3 x 3
 		for (int i = 0 + (row / 3) * 3; i < 3 + (row / 3) * 3; i++) {
 			for (int j = 0 + (col / 3) * 3; j < 3 + (col / 3) * 3; j++) {
 				if (number == matrix[i][j] && (!(i == row && j == col))) {

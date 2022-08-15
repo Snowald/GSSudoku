@@ -122,8 +122,20 @@ class sudokuTest {
 	}
 
 	@Test
-	void test() {
-		fail("Not yet implemented");
+	void testSolve() {
+		assertTrue(s::solve);
+		assertTrue(s::isValid);
 	}
+	@Test
+	void testIllegalSolve() {
+		s.add(0, 0, 5);
+		s.add(0, 1, 5);
+		assertFalse(s::solve);
+	}
+	
+//	@Test
+//	void test() {
+//		fail("Not yet implemented");
+//	}
 
 }
