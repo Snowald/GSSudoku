@@ -121,8 +121,8 @@ public class Sudoku implements SudokuSolver {
 		if (m[0].length != 9) {
 			throw new IllegalArgumentException();
 		}
-		for (int[] iv : m) {
-			for (int i : iv) {
+		for (int[] v : m) {
+			for (int i : v) {
 				validateDigitRange(i);
 			}
 		}
@@ -132,7 +132,7 @@ public class Sudoku implements SudokuSolver {
 
 	@Override
 	public int[][] getMatrix() {
-		return matrix;
+		return matrix.clone();
 	}
 
 }
