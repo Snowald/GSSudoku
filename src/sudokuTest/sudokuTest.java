@@ -16,10 +16,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import sudoku.Sudoku;
+import sudoku.SudokuSolver;
 
 class sudokuTest {
-	
-	private Sudoku s;
+
+	private SudokuSolver s;
 
 	@BeforeEach
 	void setUp() throws Exception {
@@ -47,22 +48,20 @@ class sudokuTest {
 		assertThrows(IllegalArgumentException.class, () -> s.get(5, -1));
 		assertThrows(IllegalArgumentException.class, () -> s.get(10, 2));
 	}
-	
+
 	@Test
 	void testRemove() {
 		s.add(2, 4, 5);
 		s.remove(2, 4);
 		assertEquals(0, s.get(2, 4));
 	}
-	
+
 	@Test
 	void testRemoveThrowsCorrectExceptions() {
 		assertThrows(IllegalArgumentException.class, () -> s.remove(9, 2));
 		assertThrows(IllegalArgumentException.class, () -> s.remove(3, -1));
 	}
-	
-	
-	
+
 	@Test
 	void testClear() {
 		s.add(2, 3, 4);
@@ -71,17 +70,17 @@ class sudokuTest {
 		assertEquals(0, s.get(2, 3));
 		assertEquals(0, s.get(4, 2));
 	}
-	
+
 	@Test
 	void testSetMatrix() {
-		int [][] m1 = new int[9][9];
+		int[][] m1 = new int[9][9];
 		m1[2][3] = 9;
 		m1[3][3] = 2;
 		m1[4][5] = 6;
 		s.setMatrix(m1);
 		assertEquals(9, s.get(2, 3));
 		assertEquals(2, s.get(3, 3));
-		assertEquals(6, s.get(4, 5));		
+		assertEquals(6, s.get(4, 5));
 	}
 
 	@Test
@@ -89,7 +88,7 @@ class sudokuTest {
 		s.add(4, 6, 5);
 		s.add(2, 6, 8);
 		s.add(8, 3, 1);
-		int [][] m1 = new int[9][9];
+		int[][] m1 = new int[9][9];
 		m1[4][6] = 5;
 		m1[2][6] = 8;
 		m1[8][3] = 1;
@@ -98,11 +97,11 @@ class sudokuTest {
 
 	@Test
 	void testSetMatrixGeneratesCorrectExceptions() {
-		int [][] m1 = new int[8][9];
+		int[][] m1 = new int[8][9];
 		assertThrows(IllegalArgumentException.class, () -> s.setMatrix(m1));
-		int [][] m2  = new int[9][10];
+		int[][] m2 = new int[9][10];
 		assertThrows(IllegalArgumentException.class, () -> s.setMatrix(m2));
-		int [][] m3  = new int[9][9];
+		int[][] m3 = new int[9][9];
 		m3[8][8] = 10;
 		assertThrows(IllegalArgumentException.class, () -> s.setMatrix(m3));
 
@@ -130,6 +129,7 @@ class sudokuTest {
 		assertTrue(s::isValid);
 
 	}
+
 	@Test
 	void testIllegalSolveWithDuplicates() {
 		s.add(0, 0, 5);
@@ -144,7 +144,7 @@ class sudokuTest {
 		s.add(1, 1, 5);
 		assertFalse(s::solve);
 	}
-	
+
 	@Test
 	void testIllegalSolveWithBoardLayout() {
 		s.add(0, 0, 1);
@@ -156,9 +156,9 @@ class sudokuTest {
 		s.add(2, 3, 7);
 		assertFalse(s::solve);
 		s.remove(2, 3);
-		assertTrue(s::solve);		
+		assertTrue(s::solve);
 	}
-	
+
 	@Test
 	void testClearAndSolve() {
 		s.add(0, 0, 5);
@@ -167,9 +167,9 @@ class sudokuTest {
 		s.clear();
 		assertTrue(s::solve);
 	}
-	
+
 	@Test
-	void testSolveWithRealSudoku() throws FileNotFoundException{
+	void testSolveWithRealSudoku() throws FileNotFoundException {
 		s.add(0, 2, 8);
 		s.add(0, 5, 9);
 		s.add(0, 7, 6);
@@ -199,25 +199,25 @@ class sudokuTest {
 		assertArrayEquals(generateSolvedSudoku(), s.getMatrix());
 		for (int i = 0; i < 9; i++) {
 			for (int j = 0; j < 9; j++) {
-				System.out.print(s.get(i, j)+ " ");
+				System.out.print(s.get(i, j) + " ");
 			}
 			System.out.println();
 		}
 	}
-	
-	private int[][] generateSolvedSudoku() throws FileNotFoundException{
+
+	private int[][] generateSolvedSudoku() throws FileNotFoundException {
 		Scanner scan = new Scanner(new File("src/sudokuTest/solvedSudoku"));
 		int[][] solved = new int[9][9];
 		for (int i = 0; i < 9; i++) {
 			for (int j = 0; j < 9; j++) {
 				solved[i][j] = scan.nextInt();
 			}
-			
+
 		}
 		scan.close();
 		return solved;
 	}
-	
+
 //	@Test
 //	void test() {
 //		fail("Not yet implemented");

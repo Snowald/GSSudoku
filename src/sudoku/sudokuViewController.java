@@ -15,61 +15,32 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
-import javax.swing.colorchooser.ColorSelectionModel;
 
 public class sudokuViewController {
-	
-	String title;
-	int width;
-	int height;
-	SudokuSolver model;
-	
+
+
 	public static void main(String[] args) {
 		SudokuSolver s = new Sudoku();
-		s.add(0, 2, 8);
-		s.add(0, 5, 9);
-		s.add(0, 7, 6);
-		s.add(0, 8, 2);
-		s.add(1, 8, 5);
-		s.add(2, 0, 1);
-		s.add(2, 2, 2);
-		s.add(2, 3, 5);
-		s.add(3, 3, 2);
-		s.add(3, 4, 1);
-		s.add(3, 7, 9);
-		s.add(4, 1, 5);
-		s.add(4, 6, 6);
-		s.add(5, 0, 6);
-		s.add(5, 7, 2);
-		s.add(5, 8, 8);
-		s.add(6, 0, 4);
-		s.add(6, 1, 1);
-		s.add(6, 3, 6);
-		s.add(6, 5, 8);
-		s.add(7, 0, 8);
-		s.add(7, 1, 6);
-		s.add(7, 4, 3);
-		s.add(7, 6, 1);
-		s.add(8, 6, 4);
-		new sudokuViewController("Test", 600, 600, s);
+		new sudokuViewController("SudokuSolver", s);
 	}
-	
-	public sudokuViewController(String title, int width, int height, SudokuSolver model) {
+
+	private String title;
+	private SudokuSolver model;
+
+	public sudokuViewController(String title, SudokuSolver model) {
 		this.title = title;
-		this.width = width;
-		this.height = height;
 		this.model = model;
 		SwingUtilities.invokeLater(this::createWindow);
 	}
-	
+
 	private void createWindow() {
 		generateView();
 		generateController();
 		frame.pack();
 		frame.setVisible(true);
 	}
-	
-	//Components in the view
+
+	// Components in the view
 	private JFrame frame;
 	private Container pane;
 	private JPanel gridWithSudoku;
@@ -77,82 +48,83 @@ public class sudokuViewController {
 	private Container southPanel;
 	private JButton clear;
 	private JButton solve;
-	
+
 	private void generateView() {
 		frame = new JFrame(title);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		pane = frame.getContentPane();
-		
+
 		southPanel = new JPanel();
 		pane.add(southPanel, BorderLayout.SOUTH);
-		
+
 		solve = new JButton("Solve");
 		clear = new JButton("Clear");
 		southPanel.add(solve);
 		southPanel.add(clear);
-		
+
 		numbers = new JTextField[81];
 		gridWithSudoku = generateSudokuGrid();
 		pane.add(gridWithSudoku);
-		
+
 	}
-	
+
 	private JPanel generateSudokuGrid() {
 		JPanel grid = new JPanel();
 		grid.setLayout(new GridLayout(9, 9));
-		
-		for(int i = 0; i < 81; i++) {	
-			
+
+		for (int i = 0; i < 81; i++) {
+
 			JTextField box = new JTextField();
 			numbers[i] = box;
 			box.setHorizontalAlignment(JTextField.CENTER);
 			box.setPreferredSize(new Dimension(60, 60));
 			box.setFont(new Font("", Font.BOLD, 25));
 			box.addKeyListener(new solveOnEnter());
-			int row = i/9;
-			int col = i%9;
-			if((2 < row && row < 6) ^ (2 < col && col < 6)) {
+			int row = i / 9;
+			int col = i % 9;
+			if ((2 < row && row < 6) ^ (2 < col && col < 6)) {
 				box.setBackground(Color.magenta);
 			}
-			
+
 			grid.add(box);
-		}	
+		}
 		setNumbersInGrid();
 		return grid;
 	}
-	
+
 	private void setNumbersInGrid() {
 		for (int i = 0; i < 81; i++) {
 			JTextField box = numbers[i];
-			int row = i/9;
-			int col = i%9;
+			int row = i / 9;
+			int col = i % 9;
 			int numberFromModel = model.get(row, col);
 			String text = numberFromModel == 0 ? "" : String.valueOf(numberFromModel);
 			box.setText(text);
-			
+
 		}
 	}
-	
-	private void setNumbersInModel() throws IllegalArgumentException{
-		for(int i = 0; i < 81; i++) {
+
+	private void setNumbersInModel() throws IllegalArgumentException {
+		for (int i = 0; i < 81; i++) {
 			JTextField box = numbers[i];
-			int row = i/9;
-			int col = i%9;
+			int row = i / 9;
+			int col = i % 9;
 			String text = box.getText().trim();
 			int number = text.equals("") ? 0 : Integer.parseInt(text);
-			model.add(row, col, number);			
+			model.add(row, col, number);
 		}
 	}
+
 	private void generateController() {
 		clear.addActionListener(event -> {
 			model.clear();
 			setNumbersInGrid();
 		});
-		
-		solve.addActionListener(event  -> {
+
+		solve.addActionListener(event -> {
 			try {
 				setNumbersInModel();
-				if(!model.solve()) {
+				if (!model.solve()) {
 					JOptionPane.showMessageDialog(pane, "Unsolvable sudoku");
 				}
 				setNumbersInGrid();
@@ -160,9 +132,9 @@ public class sudokuViewController {
 				JOptionPane.showMessageDialog(pane, "Unacceptable value in sudoku");
 			}
 		});
-		
-	}	
-	
+
+	}
+
 	private class solveOnEnter implements KeyListener {
 		public void keyPressed(KeyEvent e) {
 			if (e.getKeyCode() == KeyEvent.VK_ENTER) {

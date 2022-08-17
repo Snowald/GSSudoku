@@ -40,7 +40,7 @@ public interface SudokuSolver {
 	int get(int row, int col);
 
 	/**
-	 * Checks that all filled in digits follows the the sudoku rules
+	 * Checks that all filled in digits follows the rules of sudoku 
 	 * @return Wherther all numbers follow the rules
 	 */
 	boolean isValid();
@@ -60,7 +60,7 @@ public interface SudokuSolver {
 	void setMatrix(int[][] m);
 
 	/**
-	 * Returns the matrix as an array with the dimentions 9 x 9
+	 * Returns the sudoku as an array with the dimentions 9 x 9
 	 * @return 	The array containing the matrix 
 	 */
 	int[][] getMatrix();
