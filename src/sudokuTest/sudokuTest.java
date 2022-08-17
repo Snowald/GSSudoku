@@ -7,6 +7,10 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -121,9 +125,78 @@ class sudokuTest {
 	}
 
 	@Test
-	void testSolve() {
+	void testSolveOfEmpty() {
 		assertTrue(s::solve);
 		assertTrue(s::isValid);
+
+	}
+	@Test
+	void testIllegalSolveWithDuplicates() {
+		s.add(0, 0, 5);
+		s.add(1, 0, 5);
+		assertFalse(s::solve);
+		s.clear();
+		s.add(0, 0, 5);
+		s.add(0, 4, 5);
+		assertFalse(s::solve);
+		s.clear();
+		s.add(2, 2, 5);
+		s.add(1, 1, 5);
+		assertFalse(s::solve);
+	}
+	
+	@Test
+	void testIllegalSolveWithBoardLayout() {
+		s.add(0, 0, 1);
+		s.add(0, 1, 2);
+		s.add(0, 2, 3);
+		s.add(1, 0, 4);
+		s.add(1, 1, 5);
+		s.add(1, 2, 6);
+		s.add(2, 3, 7);
+		assertFalse(s::solve);
+		s.remove(2, 3);
+		assertTrue(s::solve);		
+	}
+	
+	@Test
+	void testClearAndSolve() {
+		s.add(0, 0, 5);
+		s.add(1, 0, 5);
+		assertFalse(s::solve);
+		s.clear();
+		assertTrue(s::solve);
+	}
+	
+	@Test
+	void testSolveWithRealSudoku() throws FileNotFoundException{
+		s.add(0, 2, 8);
+		s.add(0, 5, 9);
+		s.add(0, 7, 6);
+		s.add(0, 8, 2);
+		s.add(1, 8, 5);
+		s.add(2, 0, 1);
+		s.add(2, 2, 2);
+		s.add(2, 3, 5);
+		s.add(3, 3, 2);
+		s.add(3, 4, 1);
+		s.add(3, 7, 9);
+		s.add(4, 1, 5);
+		s.add(4, 6, 6);
+		s.add(5, 0, 6);
+		s.add(5, 7, 2);
+		s.add(5, 8, 8);
+		s.add(6, 0, 4);
+		s.add(6, 1, 1);
+		s.add(6, 3, 6);
+		s.add(6, 5, 8);
+		s.add(7, 0, 8);
+		s.add(7, 1, 6);
+		s.add(7, 4, 3);
+		s.add(7, 6, 1);
+		s.add(8, 6, 4);
+		assertTrue(s::solve);
+		assertArrayEquals(generateSolvedSudoku(), s.getMatrix());
 		for (int i = 0; i < 9; i++) {
 			for (int j = 0; j < 9; j++) {
 				System.out.print(s.get(i, j)+ " ");
@@ -131,11 +204,18 @@ class sudokuTest {
 			System.out.println();
 		}
 	}
-	@Test
-	void testIllegalSolve() {
-		s.add(0, 0, 5);
-		s.add(0, 1, 5);
-		assertFalse(s::solve);
+	
+	private int[][] generateSolvedSudoku() throws FileNotFoundException{
+		Scanner scan = new Scanner(new File("src/sudokuTest/solvedSudoku"));
+		int[][] solved = new int[9][9];
+		for (int i = 0; i < 9; i++) {
+			for (int j = 0; j < 9; j++) {
+				solved[i][j] = scan.nextInt();
+			}
+			
+		}
+		scan.close();
+		return solved;
 	}
 	
 //	@Test
